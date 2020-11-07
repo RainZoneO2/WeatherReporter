@@ -18,6 +18,6 @@ interface WeatherAPI {
     @GET("data/2.5/weather")
     fun getWeather(@Query("q") q : String,
                    @Query("units") units : String,
-                   @Query("appid[=db810cb02a6ad86e545cfed55209e13e]") appid : String
+                   @Query("appid") appid : String
     ) : Call<WeatherResult>
 }

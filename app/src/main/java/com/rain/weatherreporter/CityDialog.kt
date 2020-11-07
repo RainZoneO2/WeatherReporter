@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
+import android.widget.ToggleButton
 import kotlinx.android.synthetic.main.city_dialog.view.*
 
 class CityDialog : DialogFragment() {
@@ -19,16 +21,11 @@ class CityDialog : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-//        if (context is ItemHandler) {
-//            itemHandler = context
-//        } else {
-//            throw RuntimeException(
-//                "The activity isn't implementing the ItemHandler interface!"
-//            )
-//        }
     }
 
     lateinit var etCityName: EditText
+    lateinit var tbMetric: String
+    lateinit var diaView : View
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -39,6 +36,8 @@ class CityDialog : DialogFragment() {
         )
 
         etCityName = dialogView.etCityName
+        diaView = dialogView
+
 
         dialogBuilder.setView(dialogView)
 
@@ -56,9 +55,7 @@ class CityDialog : DialogFragment() {
         val positiveButton = (dialog as AlertDialog).getButton(Dialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
             if (etCityName.text.isNotEmpty()) {
-                val arguments = this.arguments
                 handleItemCreate()
-
                 dialog!!.dismiss()
             } else {
                 etCityName.error = "This field can not be empty"
@@ -67,6 +64,6 @@ class CityDialog : DialogFragment() {
     }
 
     private fun handleItemCreate() {
-
+        (context as MainActivity).cityName()
     }
 }

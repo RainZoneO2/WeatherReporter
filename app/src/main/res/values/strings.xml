@@ -12,4 +12,8 @@
     <string name="menu_about">About</string>
     <string name="details"><u><i>Details</i></u></string>
     <string name="x">X</string>
+    <string name="imperial">Imperial</string>
+    <string name="metric">Metric</string>
+    <string name="enter_city_name">Enter City Name</string>
+    <string name="metric_imperial">Metric/Imperial</string>
 </resources>
