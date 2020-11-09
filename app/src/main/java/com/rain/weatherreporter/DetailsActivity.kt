@@ -26,6 +26,7 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var appID: String = "db810cb02a6ad86e545cfed55209e13e"
     lateinit var weatherAPI: WeatherAPI
     lateinit var gMap: GoogleMap
+    lateinit var latLng: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +43,11 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val cityName = intent.getStringExtra("cityName")
         val unit = intent.getStringExtra("unit")
-
+        getAPIData(cityName, unit)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
+        latLng = LatLng(47.9, 19.04)
 
-        getAPIData(cityName, unit)
     }
 
     fun getAPIData(cityName: String, unit: String) {
@@ -63,25 +64,25 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                     "https://openweathermap.org/img/w/"
                             + weatherResult?.weather?.get(0)?.icon + ".png"
                 ).into(imageView)
+                latLng = LatLng(weatherResult?.coord?.lon!!, weatherResult.coord.lat)
 
 
-
-                tvCoord.text = "${weatherResult?.coord?.lon}" + "${weatherResult?.coord?.lat}"
-                tvDescription.text = "${weatherResult?.weather?.get(0)?.description}"
-                tvHumid.text = "${weatherResult?.main?.humidity}"
-                tvMaxTemp.text = "${weatherResult?.main?.temp_max}"
-                tvMinTemp.text = "${weatherResult?.main?.temp_min}"
-                tvPressure.text = "${weatherResult?.main?.pressure}"
-                tvTemp.text = "${weatherResult?.main?.temp}"
-                tvWeather.text = "${weatherResult?.weather?.get(0)?.main}"
+                tvCoord.text = "Lat: ${weatherResult.coord?.lat}" + " Lon: ${weatherResult.coord?.lon}"
+                tvDescription.text = "${weatherResult.weather?.get(0)?.description}"
+                tvHumid.text = "${weatherResult.main?.humidity}"
+                tvMaxTemp.text = "${weatherResult.main?.temp_max}"
+                tvMinTemp.text = "${weatherResult.main?.temp_min}"
+                tvPressure.text = "${weatherResult.main?.pressure}"
+                tvTemp.text = "${weatherResult.main?.temp}"
+                tvWeather.text = "${weatherResult.weather?.get(0)?.main}"
             }
         })
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
-
-        val cityLL = LatLng(100.00, 100.00)
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(cityLL))
+        var zoom = 7f
+        gMap.addMarker(MarkerOptions().position(latLng).title("Marker in current city"))
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 }
