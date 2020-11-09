@@ -5,15 +5,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
-import android.widget.ToggleButton
-import com.rain.weatherreporter.data.WeatherResult
 import kotlinx.android.synthetic.main.city_dialog.view.*
 
 class CityDialog : DialogFragment() {
     interface CityHandler{
-        fun cityCreated(item: WeatherResult)
+        fun cityCreated(city: String)
     }
 
     lateinit var cityHandler: CityHandler
@@ -21,10 +18,16 @@ class CityDialog : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
+        if (context is CityHandler) {
+            cityHandler = context
+        } else {
+            throw RuntimeException(
+                "The activity isn't implementing the ItemHandler interface!"
+            )
+        }
     }
 
     lateinit var etCityName: EditText
-    lateinit var diaView : View
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -35,7 +38,6 @@ class CityDialog : DialogFragment() {
         )
 
         etCityName = dialogView.etCityName
-        diaView = dialogView
 
 
         dialogBuilder.setView(dialogView)
@@ -50,7 +52,6 @@ class CityDialog : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        //TODO: ADD ALL FIELDS AS MUST WRITE, CANNOT BE NULL OR ELSE CRASH
         val positiveButton = (dialog as AlertDialog).getButton(Dialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
             if (etCityName.text.isNotEmpty()) {
@@ -62,18 +63,7 @@ class CityDialog : DialogFragment() {
         }
     }
 
-    private fun getUnit() : String {
-        if (diaView.swMetImper.isEnabled)
-            return "metric"
-        else
-            return "imperial"
-        //TODO: THIS DOESNT WORK CORRECTLY
-    }
-
     private fun handleItemCreate() {
-        //(context as MainActivity).weatherCreated()
-        MainActivity.cityNames.add(etCityName.text.toString())
-        //(context as MainActivity).cityName(etCityName.text.toString(), getUnit())
-
+        cityHandler.cityCreated(etCityName.text.toString())
     }
 }

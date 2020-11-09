@@ -11,24 +11,21 @@ import com.rain.weatherreporter.DetailsActivity
 import com.rain.weatherreporter.MainActivity
 import com.rain.weatherreporter.R
 import kotlinx.android.synthetic.main.city.view.*
+import kotlinx.android.synthetic.main.city_dialog.view.*
 
-class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
+class WeatherAdapter(val context: Context/*, listCities: List<String>*/) :
+    RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     var cityList = mutableListOf<String>()
-    val context: Context
 
-
-
-    constructor(context: Context, listCities: List<String>) {
-        this.context = context
-        cityList.addAll(listCities)
-    }
+//    init {
+//        cityList.addAll(listCities)
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(
             R.layout.city, parent, false
         )
-
         return ViewHolder(view)
     }
 
@@ -38,30 +35,38 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentCity = cityList[position]
+//        val Unit = {
+//            if
+//        }
+        holder.cityName.text = currentCity
 
         holder.btnDelete?.setOnClickListener {
-            deleteItem(holder.adapterPosition)
+            deleteCity(holder.adapterPosition)
         }
 
         holder.btnDetails?.setOnClickListener {
                 val myIntent = Intent(context, DetailsActivity::class.java)
                 myIntent.putExtra("cityName", currentCity)
+                myIntent.putExtra("unit", "metric")
                 ContextCompat.startActivity(context, myIntent, null)
         }
     }
 
-    private fun deleteItem(position: Int) {
-        cityList.removeAt(position)
-        notifyItemRemoved(position)
+    private fun deleteCity(position: Int) {
+        (context as MainActivity).runOnUiThread {
+            cityList.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
-    fun addItem(name: String) {
+    fun addCity(name: String) {
         cityList.add(name)
         notifyItemInserted(cityList.lastIndex)
     }
 
     inner class ViewHolder(cityView: View) : RecyclerView.ViewHolder(cityView) {
         val cityName = cityView.tvCityName
+        val unit = cityView.swMetImper
         val btnDelete = cityView.btnDelete
         val btnDetails = cityView.btnDetails
     }

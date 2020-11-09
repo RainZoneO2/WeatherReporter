@@ -3,7 +3,9 @@ package com.rain.weatherreporter
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.ImageView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +15,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.rain.weatherreporter.data.WeatherResult
 import com.rain.weatherreporter.network.WeatherAPI
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+//import kotlinx.android.synthetic.main.fragment_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,16 +34,13 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.activity_details)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_addcity, R.id.nav_about), drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        val toggle = ActionBarDrawerToggle(
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/")
@@ -52,7 +53,6 @@ class DetailsActivity : AppCompatActivity() {
         val cityName = intent.getStringExtra("cityName")
         val unit = intent.getStringExtra("unit")
         getAPIData(cityName, unit)
-
     }
 
     fun getAPIData(cityName: String, unit: String) {
@@ -60,7 +60,7 @@ class DetailsActivity : AppCompatActivity() {
 
         weatherCall.enqueue(object : Callback<WeatherResult> {
             override fun onFailure(call: Call<WeatherResult>, t: Throwable) {
-                text_home.setText(t.message)
+                //text_home.setText(t.message)
             }
 
             override fun onResponse(call: Call<WeatherResult>, response: Response<WeatherResult>) {
