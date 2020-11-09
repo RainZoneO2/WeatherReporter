@@ -1,38 +1,36 @@
 package com.rain.weatherreporter
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.rain.weatherreporter.data.WeatherResult
 import com.rain.weatherreporter.network.WeatherAPI
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.toolbar
-import kotlinx.android.synthetic.main.content_scrolling.*
+import kotlinx.android.synthetic.main.activity_details.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class DetailsActivity : AppCompatActivity() {
+class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var imageView: ImageView
-    private var appID : String = "db810cb02a6ad86e545cfed55209e13e"
+    private var appID: String = "db810cb02a6ad86e545cfed55209e13e"
     lateinit var weatherAPI: WeatherAPI
+    lateinit var gMap: GoogleMap
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/")
@@ -44,6 +42,10 @@ class DetailsActivity : AppCompatActivity() {
 
         val cityName = intent.getStringExtra("cityName")
         val unit = intent.getStringExtra("unit")
+
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+
         getAPIData(cityName, unit)
     }
 
@@ -57,8 +59,11 @@ class DetailsActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<WeatherResult>, response: Response<WeatherResult>) {
                 val weatherResult = response.body()
-                Glide.with(this@DetailsActivity).load("http://openweathermap.org/img/w/"
-                        + weatherResult?.weather?.get(0)?.icon+".png").into(imageView)
+                Glide.with(this@DetailsActivity).load(
+                    "https://openweathermap.org/img/w/"
+                            + weatherResult?.weather?.get(0)?.icon + ".png"
+                ).into(imageView)
+
 
 
                 tvCoord.text = "${weatherResult?.coord?.lon}" + "${weatherResult?.coord?.lat}"
@@ -71,5 +76,12 @@ class DetailsActivity : AppCompatActivity() {
                 tvWeather.text = "${weatherResult?.weather?.get(0)?.main}"
             }
         })
+    }
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        gMap = googleMap
+
+        val cityLL = LatLng(100.00, 100.00)
+        gMap.moveCamera(CameraUpdateFactory.newLatLng(cityLL))
     }
 }

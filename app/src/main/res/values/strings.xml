@@ -16,4 +16,13 @@
     <string name="metric">Metric</string>
     <string name="enter_city_name">Enter City Name</string>
     <string name="metric_imperial">Metric/Imperial</string>
+    <string name="coordinates">Coordinates</string>
+    <string name="weather">Weather</string>
+    <string name="description">Description</string>
+    <string name="temperature">Temperature</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="minimum_temperature">Minimum Temperature</string>
+    <string name="maximum_temperature">Maximum Temperature</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
