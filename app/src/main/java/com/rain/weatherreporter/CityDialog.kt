@@ -39,7 +39,6 @@ class CityDialog : DialogFragment() {
 
         etCityName = dialogView.etCityName
 
-
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton("Ok") { dialog, which ->

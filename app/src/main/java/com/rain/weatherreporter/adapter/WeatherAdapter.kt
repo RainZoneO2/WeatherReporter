@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rain.weatherreporter.DetailsActivity
 import com.rain.weatherreporter.MainActivity
@@ -13,14 +12,9 @@ import com.rain.weatherreporter.R
 import kotlinx.android.synthetic.main.city.view.*
 import kotlinx.android.synthetic.main.city_dialog.view.*
 
-class WeatherAdapter(val context: Context/*, listCities: List<String>*/) :
-    RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter(val context: Context) : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     var cityList = mutableListOf<String>()
-
-//    init {
-//        cityList.addAll(listCities)
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(
@@ -45,10 +39,10 @@ class WeatherAdapter(val context: Context/*, listCities: List<String>*/) :
         }
 
         holder.btnDetails?.setOnClickListener {
-                val myIntent = Intent(context, DetailsActivity::class.java)
-                myIntent.putExtra("cityName", currentCity)
-                myIntent.putExtra("unit", "metric")
-                ContextCompat.startActivity(context, myIntent, null)
+            val myIntent = Intent(context, DetailsActivity::class.java)
+            myIntent.putExtra("cityName", currentCity)
+            myIntent.putExtra("unit", "metric")
+            context.startActivity(myIntent)
         }
     }
 
