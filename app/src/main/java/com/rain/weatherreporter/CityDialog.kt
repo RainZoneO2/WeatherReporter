@@ -1,15 +1,15 @@
 package com.rain.weatherreporter
 
-import androidx.fragment.app.DialogFragment
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.widget.EditText
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.city_dialog.view.*
 
 class CityDialog : DialogFragment() {
-    interface CityHandler{
+    interface CityHandler {
         fun cityCreated(city: String)
     }
 

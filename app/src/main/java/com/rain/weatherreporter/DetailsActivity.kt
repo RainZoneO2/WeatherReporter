@@ -67,7 +67,8 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                 latLng = LatLng(weatherResult?.coord?.lon!!, weatherResult.coord.lat)
 
 
-                tvCoord.text = "Lat: ${weatherResult.coord?.lat}" + " Lon: ${weatherResult.coord?.lon}"
+                tvCoord.text =
+                    "Lat: ${weatherResult.coord?.lat}" + " Lon: ${weatherResult.coord?.lon}"
                 tvDescription.text = "${weatherResult.weather?.get(0)?.description}"
                 tvHumid.text = "${weatherResult.main?.humidity}"
                 tvMaxTemp.text = "${weatherResult.main?.temp_max}"

@@ -14,7 +14,8 @@ import com.rain.weatherreporter.adapter.WeatherAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelectedListener, CityDialog.CityHandler {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    CityDialog.CityHandler {
 
     lateinit var weatherAdapter: WeatherAdapter
 
@@ -30,7 +31,12 @@ class MainActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelect
         }
 
         val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -54,7 +60,8 @@ class MainActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelect
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
-                true
+                //true
+                false
             }
             R.id.nav_addcity -> {
                 showAddCityDialog()
