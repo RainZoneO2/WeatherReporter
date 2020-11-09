@@ -8,15 +8,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ToggleButton
+import com.rain.weatherreporter.data.WeatherResult
 import kotlinx.android.synthetic.main.city_dialog.view.*
 
 class CityDialog : DialogFragment() {
-//    interface ItemHandler{
-//        fun itemCreated(item: ShoppingItem)
-//        fun itemUpdated(item: ShoppingItem)
-//    }
-//
-//    lateinit var itemHandler: ItemHandler
+    interface CityHandler{
+        fun cityCreated(item: WeatherResult)
+    }
+
+    lateinit var cityHandler: CityHandler
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -24,7 +24,6 @@ class CityDialog : DialogFragment() {
     }
 
     lateinit var etCityName: EditText
-    lateinit var tbMetric: String
     lateinit var diaView : View
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -63,7 +62,18 @@ class CityDialog : DialogFragment() {
         }
     }
 
+    private fun getUnit() : String {
+        if (diaView.swMetImper.isEnabled)
+            return "metric"
+        else
+            return "imperial"
+        //TODO: THIS DOESNT WORK CORRECTLY
+    }
+
     private fun handleItemCreate() {
-        (context as MainActivity).cityName()
+        //(context as MainActivity).weatherCreated()
+        MainActivity.cityNames.add(etCityName.text.toString())
+        //(context as MainActivity).cityName(etCityName.text.toString(), getUnit())
+
     }
 }

@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-//HOST: https://openweathermap.org/api
+//HOST: http://api.openweathermap.org/
 //
 //PATH: data/2.5/weather
 //

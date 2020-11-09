@@ -12,14 +12,11 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.rain.weatherreporter.ui.gallery.GalleryFragment"
-        android:label="@string/menu_addcity"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_addcity"
+        android:label="@string/menu_addcity" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.rain.weatherreporter.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_about"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_about"
+        android:label="@string/menu_about" />
+
 </navigation>
